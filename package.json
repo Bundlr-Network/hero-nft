@@ -1,0 +1,11 @@
+{
+  "name": "heroes-nft",
+  "version": "1.0.0",
+  "dependencies": {
+    "esbuild-node-externals": "^1.4.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.44",
+    "rimraf": "^3.0.2"
+  }
+}
