@@ -7,9 +7,9 @@ export function handle(state, action) {
     const caller = action.caller;
     if (input.function === "transfer") {
         ContractAssert(state.transferable ?? true, `Token cannot be transferred - soulbound`);
-        if (state.lastTransferTimestamp && state.transferLockedDuration) {
-            const current = SmartWeave.block.timestamp;
-            ContractAssert((current - state.lastTransferTimestamp) <= state.transferLockedDuration, `Token cannot be transferred - time-based soulbound`);
+        const current = SmartWeave.block.timestamp;
+        if (state.lastTransferTimestamp && state.lockTime) {
+            ContractAssert((current - state.lastTransferTimestamp) <= state.lockTime, `Token cannot be transferred - time-based soulbound`);
         }
         const target = input.target;
         ContractAssert(target, `No target specified.`);
@@ -24,7 +24,7 @@ export function handle(state, action) {
         }
         balances[target] += qty;
         state.balances = balances;
-        state.lastTransfer = SmartWeave.block.timestamp;
+        state.lastTransferTimestamp = current;
         return {state};
     }
     if (input.function === "balance") {
